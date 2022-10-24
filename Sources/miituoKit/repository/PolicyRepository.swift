@@ -26,11 +26,11 @@ public struct PolicyRepository {
         var request = URLRequest(url: URL(string: urlString)!, cachePolicy: .returnCacheDataElseLoad)
         request.httpMethod = "GET"
         
-        session.dataTask(with: request) { data, response, error in
+        session.dataTask(with: request) { data, response, errorData in
             
             //DispatchQueue.main.async {
                 
-                if let error = error {
+                if let error = errorData {
                     print(error)
                     completion(nil, AppError(message: error.localizedDescription))
                 } else if let data = data {
@@ -38,6 +38,7 @@ public struct PolicyRepository {
                         let resp = try JSONDecoder().decode([PolicyClient].self, from: data)
                         completion(resp, nil)
                     } catch {
+                        print(error)
                         print(" fatal error convert")
                         completion(nil, AppError(message: "Error al convertir respuesta"))
                     }
