@@ -15,7 +15,7 @@ public struct PolicyRepository {
         self.baseUrl = baseUrl
     }
     
-    public func getPolicies(telefono:String, completion: @escaping([PolicyClient]?, AppError?) -> Void){
+    public func getPolicies(telefono:String, completion: @escaping(PolicyClientResponse?, AppError?) -> Void){
         
         let sessionConfig = URLSessionConfiguration.default
         sessionConfig.timeoutIntervalForRequest = 120
@@ -28,27 +28,24 @@ public struct PolicyRepository {
         
         session.dataTask(with: request) { data, response, errorData in
             
-            //DispatchQueue.main.async {
-                
-                if let error = errorData {
+            if let error = errorData {
+                print(error)
+                completion(nil, AppError(message: error.localizedDescription))
+            } else if let data = data {
+                do {
+                    
+                    let resp = try JSONDecoder().decode(PolicyClientResponse.self, from: data)
+                    completion(resp, nil)
+                } catch {
                     print(error)
-                    completion(nil, AppError(message: error.localizedDescription))
-                } else if let data = data {
-                    do {
-                        let resp = try JSONDecoder().decode([PolicyClient].self, from: data)
-                        completion(resp, nil)
-                    } catch {
-                        print(error)
-                        print(" fatal error convert")
-                        completion(nil, AppError(message: "Error al convertir respuesta"))
-                    }
-                } else {
-                    print(" fatal error ")
-                    completion(nil, AppError(message: "Tuvimos un problema, intente más tarde."))
+                    print(" fatal error convert ")
+                    completion(nil, AppError(message: "Error al convertir respuesta"))
                 }
-            //}
-            
+            } else {
+                print(" fatal error ")
+                completion(nil, AppError(message: "Tuvimos un problema, intente más tarde."))
+            }
+                    
         }.resume()
     }
-    
 }

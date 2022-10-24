@@ -7,6 +7,10 @@
 
 import Foundation
 
+public struct PolicyClientResponse: Codable {
+    public var items: [PolicyClient]
+}
+
 // MARK: - PolicyClientElement
 public struct PolicyClient: Codable {
     public var policies: Policies
