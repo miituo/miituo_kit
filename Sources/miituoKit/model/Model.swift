@@ -14,3 +14,15 @@ public struct AppError {
         self.message = message
     }
 }
+
+public struct MessageResponse : Codable {
+    let message: String
+    
+    enum CodingKeys: String, CodingKey {
+        case message = "Message"
+    }
+    
+    public init(message: String){
+        self.message = message
+    }
+}
