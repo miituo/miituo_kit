@@ -1,2 +1,3 @@
-# miituo_kit
-Lib miituo aAPI
+# miituoKit
+
+A description of this package.
