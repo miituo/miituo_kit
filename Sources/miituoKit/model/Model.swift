@@ -8,7 +8,7 @@
 import Foundation
 
 public struct AppError {
-    let message: String
+    public let message: String
     
     public init(message: String) {
         self.message = message

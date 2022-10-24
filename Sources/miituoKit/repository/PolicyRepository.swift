@@ -15,7 +15,7 @@ public struct PolicyRepository {
         self.baseUrl = baseUrl
     }
     
-    public func getPolicies(telefono:String, completion: @escaping(PolicyClient?, AppError?) -> Void){
+    public func getPolicies(telefono:String, completion: @escaping([PolicyClient]?, AppError?) -> Void){
         
         let sessionConfig = URLSessionConfiguration.default
         sessionConfig.timeoutIntervalForRequest = 120
@@ -28,17 +28,15 @@ public struct PolicyRepository {
         
         session.dataTask(with: request) { data, response, error in
             
-            DispatchQueue.main.async {
+            //DispatchQueue.main.async {
+                
                 if let error = error {
-                    print("return error")
                     print(error)
                     completion(nil, AppError(message: error.localizedDescription))
                 } else if let data = data {
                     do {
-                        
-                        let resp = try JSONDecoder().decode(PolicyClient.self, from: data)
+                        let resp = try JSONDecoder().decode([PolicyClient].self, from: data)
                         completion(resp, nil)
-
                     } catch {
                         print(" fatal error convert")
                         completion(nil, AppError(message: "Error al convertir respuesta"))
@@ -47,7 +45,7 @@ public struct PolicyRepository {
                     print(" fatal error ")
                     completion(nil, AppError(message: "Tuvimos un problema, intente más tarde."))
                 }
-            }
+            //}
             
         }.resume()
     }
