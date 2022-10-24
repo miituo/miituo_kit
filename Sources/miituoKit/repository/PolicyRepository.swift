@@ -15,7 +15,7 @@ public struct PolicyRepository {
         self.baseUrl = baseUrl
     }
     
-    public func getPolicies(telefono:String, completion: @escaping(PolicyClientResponse?, AppError?) -> Void){
+    public func getPolicies(telefono:String, completion: @escaping([PolicyClient]?, AppError?) -> Void){
         
         let sessionConfig = URLSessionConfiguration.default
         sessionConfig.timeoutIntervalForRequest = 120
@@ -34,7 +34,7 @@ public struct PolicyRepository {
             } else if let data = data {
                 do {
                     
-                    let resp = try JSONDecoder().decode(PolicyClientResponse.self, from: data)
+                    let resp = try JSONDecoder().decode([PolicyClient].self, from: data)
                     completion(resp, nil)
                 } catch {
                     print(error)
