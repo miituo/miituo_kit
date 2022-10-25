@@ -23,7 +23,7 @@ public struct PolicyRepository {
         let session = URLSession(configuration: sessionConfig)
         
         let urlString = "\(self.baseUrl)InfoClientMobil/Celphone/\(phone)"
-        var request = URLRequest(url: URL(string: urlString)!, cachePolicy: .returnCacheDataElseLoad)
+        var request = URLRequest(url: URL(string: urlString)!)
         request.httpMethod = "GET"
         session.dataTask(with: request) { data, response, errorData in
             if let error = errorData {
