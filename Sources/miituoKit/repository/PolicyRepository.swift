@@ -15,7 +15,7 @@ public struct PolicyRepository {
         self.baseUrl = baseUrl
     }
     
-    public func getPolicies(phone: String, completion: @escaping([PolicyClient]?, AppError?) -> Void){
+    public func getPolicies(phone: String, completion: @escaping([PolicyClient]?, AppError?) -> Void) {
         
         let sessionConfig = URLSessionConfiguration.default
         sessionConfig.timeoutIntervalForRequest = 120
@@ -25,9 +25,7 @@ public struct PolicyRepository {
         let urlString = "\(self.baseUrl)InfoClientMobil/Celphone/\(phone)"
         var request = URLRequest(url: URL(string: urlString)!, cachePolicy: .returnCacheDataElseLoad)
         request.httpMethod = "GET"
-        
         session.dataTask(with: request) { data, response, errorData in
-            
             if let error = errorData {
                 completion(nil, AppError(message: error.localizedDescription))
             } else if let data = data {
@@ -41,7 +39,8 @@ public struct PolicyRepository {
                     }
                 } catch {
                     print(error)
-                    completion(nil, AppError(message: "Tuvimos un problema, intente más tarde."))                }
+                    completion(nil, AppError(message: "Tuvimos un problema, intente más tarde."))
+                }
             } else {
                 completion(nil, AppError(message: "Tuvimos un problema, intente más tarde."))
             }

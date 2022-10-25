@@ -65,7 +65,7 @@ public struct Policies: Codable {
     public var insuranceCarrier: InsuranceCarrier
     public var state, coverage: Coverage
     public var vehicle: Vehicle
-    public var tickets: [Ticket]
+    public var tickets: [Ticket]?
     public var paymentType: String
     public var type: Int
 
