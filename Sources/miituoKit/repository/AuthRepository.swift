@@ -16,7 +16,7 @@ public struct AuthRepository: TokenClient {
         self.token = ""
     }
     
-    public func sendToken(_ request: ClientTokenRequest){
+    public func sendToken(_ request: ClientTokenRequest, completion: @escaping(Bool, AppError?) -> Void){
 
         let todosEndpoint: String = "\(self.baseUrl)ClientUser/"
         let todosURL = URL(string: todosEndpoint)!
@@ -29,57 +29,29 @@ public struct AuthRepository: TokenClient {
             let data = try JSONEncoder().encode(request)
             todosUrlRequest.httpBody = data
         } catch {
-            print("Error: cannot create JSON from todo")
+            completion(false, AppError(message: "Tuvimos un problema, intente más tarde."))
         }
         
         let session = URLSession.shared
-        session.dataTask(with: todosUrlRequest) {
-            (data, response, error) in
-            guard error == nil else {
-                print("error calling POST on /todos/1")
-                return//completion("error")
-            }
-            guard let responseData = data else {
-                print("Error: did not receive data")
-                return//completion("error")
-            }
+        session.dataTask(with: todosUrlRequest) { (data, response, error) in
             
-            if let httpResponse = response as? HTTPURLResponse {
-                if httpResponse.statusCode == 200{
-                    if let str = String(data: responseData, encoding: String.Encoding.utf8) {
-
-                        //valordevuelto = str
-                        //completion(str)
-                        
+            if let error = error {
+                completion(false, AppError(message: error.localizedDescription))
+            } else if let data = data {
+                do {
+                    if let httpresponse = response as? HTTPURLResponse, httpresponse.statusCode != 200 {
+                        let resp = try JSONDecoder().decode(MessageResponse.self, from: data)
+                        completion(false, AppError(message: resp.message))
                     } else {
-                        //completion("error")
-                        print("not a valid UTF-8 sequence")
+                        completion(true, nil)
                     }
-                }else{
-                    do {
-                        guard let receivedTodo = try JSONSerialization.jsonObject(with: responseData,
-                                                                                  options: []) as? [String: Any] else {
-                                                                                    print("Could not get JSON from responseData as dictionary")
-                                                                                    return
-                        }
-                        print("The todo is: " + receivedTodo.description)
-                        
-                        guard let todoID = receivedTodo["Message"] as? String else {
-                            print("Could not get todoID as int from JSON")
-                            return
-                        }
-                        //valordevuelto = todoID
-                        //completion(todoID)
-                        
-                    } catch  {
-                        print("error parsing response from POST on /todos")
-                        //completion("error")
-                    }
+                } catch {
+                    print(error)
+                    completion(false, AppError(message: "Tuvimos un problema, intente más tarde."))
                 }
+            } else{
+                completion(false, AppError(message: "Tuvimos un problema, intente más tarde."))
             }
-            
-            // parse the result as JSON, since that's what the API provides
-            
         }.resume()
     }
 }
