@@ -7,12 +7,7 @@
 
 import Foundation
 
-public protocol TokenClient{
-    var token: String { get }
-}
-
-public struct MainRepository: TokenClient {
-    public var token: String
+public struct MainRepository {
     public var policyRepo: PolicyRepository
     public var authRepo: AuthRepository
 
@@ -23,12 +18,9 @@ public struct MainRepository: TokenClient {
        
         policyRepo = PolicyRepository(baseUrl: environment.url)
         authRepo = AuthRepository(baseUrl: environment.url)
-        
-        self.token = ""
     }
     
     public mutating func updateToken(_ token: String){
-        self.token = token
         self.authRepo.token = token
     }
 }

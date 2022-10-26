@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AuthRepository: TokenClient {
+public struct AuthRepository {
     public var token: String
     public var baseUrl: String
     
@@ -24,7 +24,7 @@ public struct AuthRepository: TokenClient {
         var todosUrlRequest = URLRequest(url: todosURL)
         todosUrlRequest.httpMethod = "PUT"
         todosUrlRequest.addValue(token, forHTTPHeaderField: "Authorization")
-                
+        
         do {
             let data = try JSONEncoder().encode(request)
             todosUrlRequest.httpBody = data
