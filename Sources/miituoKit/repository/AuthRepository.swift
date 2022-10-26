@@ -23,6 +23,7 @@ public struct AuthRepository {
         
         var todosUrlRequest = URLRequest(url: todosURL)
         todosUrlRequest.httpMethod = "PUT"
+        todosUrlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         todosUrlRequest.addValue(token, forHTTPHeaderField: "Authorization")
         
         do {
