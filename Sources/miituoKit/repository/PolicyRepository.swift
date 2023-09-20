@@ -10,7 +10,8 @@ import Foundation
 public struct PolicyRepository {
     
     public var baseUrl: String
-
+    var seguidad: String = "Basic yTZ/1bWv6Mpi85ZDkwK4AvJVZH2zA6hcdk0BecEoP4upNOLi2hLM4fzzcPmmSe8UUI5EcJoT4dySqIStZaqvCnlo4dLCASmhjZInXhRlcdc="
+    
     public init(baseUrl: String){
         self.baseUrl = baseUrl
     }
@@ -24,7 +25,12 @@ public struct PolicyRepository {
         
         let urlString = "\(self.baseUrl)InfoClientMobil/Celphone/\(phone)"
         var request = URLRequest(url: URL(string: urlString)!)
+        request.addValue("\(seguidad)", forHTTPHeaderField: "Authorization")
+        
         request.httpMethod = "GET"
+        
+        
+        
         session.dataTask(with: request) { data, response, errorData in
             if let error = errorData {
                 completion(nil, AppError(message: error.localizedDescription))
