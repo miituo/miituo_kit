@@ -56,7 +56,7 @@ public struct Client: Codable {
 
 // MARK: - Policies
 public struct Policies: Codable {
-    public var hasVehiclePictures, hasOdometerPicture, hasSiniester: Bool
+    public var hasVehiclePictures, hasOdometerPicture, hasSiniester, renew: Bool
     public var reportState, id: Int
     public var noPolicy, startDate, vigencyDate: String
     public var rate: Double
@@ -72,6 +72,7 @@ public struct Policies: Codable {
     enum CodingKeys: String, CodingKey {
         case hasVehiclePictures = "HasVehiclePictures"
         case hasOdometerPicture = "HasOdometerPicture"
+        case renew = "Renew"
         case hasSiniester = "HasSiniester"
         case reportState = "ReportState"
         case id = "Id"
@@ -91,9 +92,11 @@ public struct Policies: Codable {
         case type = "Type"
     }
 
-    public init(hasVehiclePictures: Bool, hasOdometerPicture: Bool, hasSiniester: Bool, reportState: Int, id: Int, noPolicy: String, startDate: String, vigencyDate: String, rate: Double, lastOdometer: Int, mensualidad: Int, limitReportDate: String, insuranceCarrier: InsuranceCarrier, state: Coverage, coverage: Coverage, vehicle: Vehicle, tickets: [Ticket], paymentType: String, type: Int) {
+    public init(hasVehiclePictures: Bool, hasOdometerPicture: Bool, hasSiniester: Bool, renew:Bool,reportState: Int, id: Int, noPolicy: String, startDate: String, vigencyDate: String, rate: Double, lastOdometer: Int, mensualidad: Int, limitReportDate: String, insuranceCarrier: InsuranceCarrier, state: Coverage, coverage: Coverage, vehicle: Vehicle, tickets: [Ticket], paymentType: String, type: Int) {
+       
         self.hasVehiclePictures = hasVehiclePictures
         self.hasOdometerPicture = hasOdometerPicture
+        self.renew = renew
         self.hasSiniester = hasSiniester
         self.reportState = reportState
         self.id = id
