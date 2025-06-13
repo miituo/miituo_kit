@@ -56,7 +56,8 @@ public struct Client: Codable {
 
 // MARK: - Policies
 public struct Policies: Codable {
-    public var hasVehiclePictures, hasOdometerPicture, hasSiniester, renew: Bool
+    public var hasVehiclePictures, hasOdometerPicture, hasSiniester
+    public var renew: Bool?
     public var reportState, id: Int
     public var noPolicy, startDate, vigencyDate: String
     public var rate: Double
